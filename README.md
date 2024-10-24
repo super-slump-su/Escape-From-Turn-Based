@@ -1,4 +1,4 @@
 # Escape-From-Turn-Based
-Text-based extraction shooter loosely based on the popular titles today. (WIP)
+Text-based game loosely based on modern extraction shooters. (WIP)
 
 Includes all files and documentation created during development.
