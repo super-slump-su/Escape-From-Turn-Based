@@ -1,4 +1,5 @@
 # Escape-From-Turn-Based
-Text-based game loosely based on modern extraction shooters. (WIP)
+Escape From Turn-Based is a text-based game loosely based on modern extraction shooters. (Current WIP)
 
-Includes all files and documentation created during development.
+Repository includes all files and documentation created during development.
+All game statistics and information is contained in Info.txt.
