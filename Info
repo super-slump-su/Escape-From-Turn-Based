@@ -8,9 +8,34 @@ Players venture out into different areas to fight, loot, sometimes die, and extr
 
 Map:
 Players have several zones available to them to support different playstyles:
-1. Factory- the smallest map, full of rooms and corridors. Some say the boss of the factory still hangs around to protect his investments.
-2. Customs- medium-sized map, originally used for logistics and storage.
-3. Shoreline- medium-sized map, used to be a health resort and hydroelectric power plant.
-4. Lighthouse- larger map, used to be a lighthouse and water treatment plant.
-5.
-long sightlines combined with 
+    1. Factory- the smallest map, full of rooms and corridors. Some say the boss of the factory still hangs around to protect his investments.
+    2. Customs- medium-sized map, originally used for logistics and storage. A local fixer lives in the factory dormitory.
+    3. Shoreline- medium-sized map, used to be a health resort and hydroelectric power plant. A "doctor" turned the resort into a base of operations.
+    4. Lighthouse- larger map, used to be a lighthouse and water treatment plant. Mercenaries have turned the plant into a stronghold.
+    5. Reserve- medium-sized map, large trainyard with military buldings and bunkers. A gang of former military men live out of one of the dormitories.
+    6. Woods- larger map, trees surrounding a sawmill and hills. A feared marksman lives in the sawmill.
+    7. Interchange- medium-sized map, was a shopping mall pre-conflict. A crazed machinegunner hangs out in the old stores.
+    8. Streets of Tarkov- larger map, long sightlines combined with malls and shops. A "businessman" has made his crew a home in the old car dealership.
+    9. Ground Zero- larger map, maze of office buildings and high-rises. A former policeman hangs around his old patrol route.
+    10. Labs- medium-sized map, lots of high-value loot rooms and laboratories.
+
+Enemies:
+Players are to assume all people encountered are hostiles, with exception to some members of the same faction.
+Scavengers- civilians who turned to a life of shooting and stealing. Some are ex-military but all are at least decent shots. Mostly civilian-grade guns and equipment.
+BEARs- local Russian PMCs. Access to Russian military-grade guns and equipment.
+USECs- foreign Western PMCs. Access to NATO military-grade guns and equipment.
+Raiders- strong ex-military scavengers who move in cohesive teams. Russian and NATO military-grade guns and equipment.
+Rogues- strong ex-USEC PMCs who have banded together to control the water treatment plant. NATO military-grade guns and equipment.
+
+Guns and ammo:
+Players have access to a full arsenal of weapons available in the game.
+They can choose to take or swap guns and ammo acquired from enemies or from looting.
+Players can choose to modify weapons they own to make them easier to shoot, to gain range, or silence shots.
+Different enemy factions have access to different weapons that fit their group's backstory.
+
+
+Players can equip a certain ammo type in their hideout to shoot for their whole raid.
+Primary weapon ammo is considered infinite for players and enemies if less than 5 magazines or 3 drums or boxes were fired in one fight.
+If players and enemies runs out of ammo, enemies will switch to their secondary weapon while players can choose to do so.
+However, players will have to scavenge ammo for their primary if they shoot all their bullets in one go.
+Ammo types have various varieties for increased armor penetration or flesh damage.
