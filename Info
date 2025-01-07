@@ -4,7 +4,7 @@ The Player:
 Players can equip their character with a primary and secondary weapon, as well as a helmet, headset, vest, tactical rig, and backpack.
 They have a maximum health pool of 440, split between the head (35) and the body (405).
 Players can choose between two factions but their choices do not greatly affect gameplay.
-Players start in their hideout and venture out into different areas to fight, loot, sometimes die, and extract.
+Players start in their hideout and venture out into different zones to fight, loot, sometimes die, and extract.
 
 The Map:
 Players have several zones available to them to support different playstyles:
@@ -12,7 +12,7 @@ Players have several zones available to them to support different playstyles:
     2. Customs- medium-sized map, originally used for logistics and storage. A local fixer lives in the factory dormitory.
     3. Shoreline- medium-sized map, used to be a health resort and hydroelectric power plant. A "doctor" turned the resort into a base of operations.
     4. Lighthouse- larger map, used to be a lighthouse and water treatment plant. Mercenaries have turned the plant into a stronghold.
-    5. Reserve- medium-sized map, large trainyard with military buldings and bunkers. A gang of former military men live out of one of the dormitories.
+    5. Reserve- medium-sized map, large trainyard with military buldings and bunkers. A gang of former military men live in one of the dormitories.
     6. Woods- larger map, trees surrounding a sawmill and hills. A feared marksman lives in the sawmill.
     7. Interchange- medium-sized map, was a shopping mall pre-conflict. A crazed machinegunner hangs out in the old stores.
     8. Streets of Tarkov- larger map, long sightlines combined with malls and shops. A "businessman" has made his crew a home in the old car dealership.
@@ -26,14 +26,16 @@ BEARs- local Russian PMCs. Access to Russian military-grade guns and equipment.
 USECs- foreign Western PMCs. Access to NATO military-grade guns and equipment.
 Raiders- strong ex-military scavengers who move in cohesive teams. Russian and NATO military-grade guns and equipment.
 Rogues- strong ex-USEC PMCs who have banded together to control the water treatment plant. NATO military-grade guns and equipment.
+Bosses are extremely strong location-specific enemies who are to be expected in any place in a raid. They have special guns and equipment, but a low chance of spawning.
 
 The Guns and Ammo:
 Players have access to a full arsenal of weapons available in the game.
 They can choose to take or swap guns and ammo acquired from enemies or from looting.
 Players can choose to modify weapons they own to make them easier to shoot, to gain range, or silence shots.
 Different enemy factions have access to different weapons that fit their group's backstory.
-List of guns and their stats:
+List of most guns and their stats:
 
+Some special weapons not in this list can only be found by fighting certain people or groups, so keep an eye out.
 
 Players can equip a certain ammo type in their hideout to shoot for their whole raid.
 Primary weapon ammo is considered infinite for players and enemies if less than 5 magazines or 3 drums or boxes were fired in one fight.
