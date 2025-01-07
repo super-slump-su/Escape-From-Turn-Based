@@ -13,8 +13,8 @@ public class Enemy {
 	private double totalHealth; // Combined head and body health pool
 	private double headHealth; // Head health pool
 	private double bodyHealth; // Body health pool
-	private double aim; // Aim modifier based on enemy difficulty (Worst aim to best: Scavengers,
-						// PMCs/Raiders, Rogues/Boss Guards, Bosses)
+	private double aim; // Aim modifier based on enemy difficulty 
+	// (Worst aim to best: Scavengers, PMCs/Raiders, Rogues/Boss Guards, Bosses)
 	private Gear[] equipment; // List of gear per person
 	private Gear headset; // Headset - index 0 of gear
 	private Gear helmet; // Helmet - index 1 of gear
@@ -45,13 +45,9 @@ public class Enemy {
 			"MCX", "M4A1", "MDR", "SCAR-L", "SA-58", // Assault rifles indexes 13-17
 			"TX-15", "RFB", "SR-25", "M1A", "G28", "RSASS", // Assault carbines and DMRs indexes 18-23
 			"M700", "DVL-10", "AXMC" }; // Snipers indexes 24-26
-	private String[] raiderWeapons = { "AS-VAL", "KBP 9A-91", "AKS-74U", "AK-74M", "AK-12", "AK-104", "AK-105", // RUS
-																												// weaponry
-																												// indexes
-																												// 0-6
+	private String[] raiderWeapons = { "AS-VAL", "KBP 9A-91", "AKS-74U", "AK-74M", "AK-12", "AK-104", "AK-105", // RUS weaponry indexes 0-6
 			"MP7A2", "FN P90", "MP5", "MCX", "MDR", "M4A1", "AUG A3", "SA-58" }; // NATO weaponry indexes 7-14
-	private String[] rogueWeapons = { "MCX Spear", "MDR", "M4A1", "HK 416A5", "AUG A3", "SA-58" }; // NATO weaponry
-																									// indexes 0-5
+	private String[] rogueWeapons = { "MCX Spear", "MDR", "M4A1", "HK 416A5", "AUG A3", "SA-58" }; // NATO weaponry indexes 0-5
 	/*
 	 * Various accessor and modifier methods for above instance variables.
 	 */
