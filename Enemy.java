@@ -13,11 +13,20 @@ public class Enemy {
 	private double totalHealth; // Combined head and body health pool
 	private double headHealth; // Head health pool
 	private double bodyHealth; // Body health pool
-	private double aim; // Aim modifier based on enemy difficulty (Worst aim to best: Scavengers, PMCs/Raiders, Rogues/Boss Guards, Bosses)
-	private Gun primary; // Primary weapon
-	private String primaryWeapon; // Name of primary weapon
-	private Gun secondary; // Secondary weapon if equipped
-	private String secondaryWeapon; // Name of secondary weapon if equipped
+	private double aim; // Aim modifier based on enemy difficulty (Worst aim to best: Scavengers,
+						// PMCs/Raiders, Rogues/Boss Guards, Bosses)
+	private Gear[] equipment; // List of gear per person
+	private Gear headset; // Headset - index 0 of gear
+	private Gear helmet; // Helmet - index 1 of gear
+	private Gear vest; // Vest - index 2 of gear
+	private Gear unarmoredRig; // Unarmored rig - index 3 of gear
+	private Gear armoredRig; // Armored rig - index 2 and 3 of gear (Covers vest and unarmored rig)
+	private Gear backpack; // Backpack - index 4 of gear
+	private Gun[] guns; // List of weapons per person
+	private Gun primary; // Primary weapon - index 0 of guns
+	private String primaryName; // Name of primary weapon
+	private Gun secondary; // Secondary weapon if equipped - index 1 of guns
+	private String secondaryName; // Name of secondary weapon if equipped
 	private String[] scavWeapons = { "PM", "SR-1MP", "MP-443", // Pistols indexes 0-2
 			"TOZ-106", "MP-133", "MP-153", "Saiga-12K", // Shotguns indexes 3-6
 			"PP-91", "Saiga-9", "STM-9", "PPSh-41", // SMGs indexes 7-10
@@ -36,9 +45,13 @@ public class Enemy {
 			"MCX", "M4A1", "MDR", "SCAR-L", "SA-58", // Assault rifles indexes 13-17
 			"TX-15", "RFB", "SR-25", "M1A", "G28", "RSASS", // Assault carbines and DMRs indexes 18-23
 			"M700", "DVL-10", "AXMC" }; // Snipers indexes 24-26
-	private String[] raiderWeapons = { "AS-VAL", "KBP 9A-91", "AKS-74U", "AK-74M", "AK-12", "AK-104", "AK-105", // RUS weaponry indexes 0-6
-			"MP7A2", "FN P90", "MP5", "MCX", "MDR", "M4A1", "AUG A3", "SA-58" }; // UN weaponry indexes 7-14
-	private String[] rogueWeapons = { "MCX Spear", "MDR", "M4A1", "HK 416A5", "AUG A3", "SA-58" }; // UN weaponry indexes 0-5
+	private String[] raiderWeapons = { "AS-VAL", "KBP 9A-91", "AKS-74U", "AK-74M", "AK-12", "AK-104", "AK-105", // RUS
+																												// weaponry
+																												// indexes
+																												// 0-6
+			"MP7A2", "FN P90", "MP5", "MCX", "MDR", "M4A1", "AUG A3", "SA-58" }; // NATO weaponry indexes 7-14
+	private String[] rogueWeapons = { "MCX Spear", "MDR", "M4A1", "HK 416A5", "AUG A3", "SA-58" }; // NATO weaponry
+																									// indexes 0-5
 	/*
 	 * Various accessor and modifier methods for above instance variables.
 	 */
@@ -147,20 +160,20 @@ public class Enemy {
 		this.aim = aim;
 	}
 
-	public String getPrimaryWeapon() {
-		return primaryWeapon;
+	public String getPrimaryName() {
+		return primaryName;
 	}
 
-	public void setPrimaryWeapon(String weapon) {
-		this.primaryWeapon = weapon;
+	public void setPrimaryName(String weapon) {
+		this.primaryName = weapon;
 	}
 
-	public String getSecondaryWeapon() {
-		return secondaryWeapon;
+	public String getSecondaryName() {
+		return secondaryName;
 	}
 
-	public void setSecondaryWeapon(String weapon) {
-		this.secondaryWeapon = weapon;
+	public void setSecondaryName(String weapon) {
+		this.secondaryName = weapon;
 	}
 
 	public Gun getPrimary() {
@@ -179,121 +192,39 @@ public class Enemy {
 		this.secondary = secondary;
 	}
 
-	private void setPrimary(String weapon) {
-		this.primary = new Gun(weapon);
-	}
-
-	private void setSecondary(String weapon) {
-		this.secondary = new Gun(weapon);
-	}
 	/*
-	 * Overall method for creating enemies for the player to fight.
-	 * Creates an array of Enemy types for the current enemy encounter.
+	 * Overall method for creating enemies for the player to fight. Creates an array
+	 * of Enemy types for the current enemy encounter.
 	 */
 	public Enemy[] createEnemies(String map, String time) {
-		Enemy[] temp = new Enemy[4];
-		Enemy first = new Enemy();
+		Enemy[] enemies = new Enemy[4];
 		int random = (int) (Math.random() * (20)) + 1;
 		if (random < 11) { // Majority of enemies fought will be scavengers (scavs)
-			first.setEnemyType("Scavenger");
-			first.setBoss(false);
-			random = (int) (Math.random() * 5) + 1;
-			if (random > 2) { // Three-fifths chance of a group of scavs (duo, trio, or squad)
-				first.setGroup(true);
-				random = (int) (Math.random() * 3) + 2;
-				for (int i = 0; i < random; i++) {
-					temp[i] = createScav();
-					temp[i].setGroup(true);
-				}
-			} else {
-				temp[0] = createScav();
-				temp[0].setGroup(false);
-			}
+			scavGroup(enemies);
 		} else if (random > 10 && random < 16) { // Second largest population of enemies will be PMCs
-			first.setEnemyType("PMC");
-			first.setBoss(false);
-			random = (int) (Math.random() * 5) + 1;
-			if (random > 4) { // One-fifth chance of a group of PMCs (duo, trio, or squad)
-				first.setGroup(true);
-				random = (int) (Math.random() * 3) + 2;
-				if (random == 1) { // BEAR squad
-					random = (int) (Math.random() * 4) + 1;
-					for (int i = 0; i < random; i++) {
-						temp[i] = createBEAR();
-						temp[i].setGroup(true);
-					}
-				} else { // USEC squad
-					random = (int) (Math.random() * 3) + 2;
-					for (int i = 0; i < random; i++) {
-						temp[i] = createUSEC();
-						temp[i].setGroup(true);
-					}
-				}
-			} else {
-				random = (int) (Math.random() * 2) + 1;
-				if (random == 1) { // Solo BEAR
-					temp[0] = createBEAR();
-					temp[0].setGroup(false);
-				} else { // Solo USEC
-					temp[0] = createUSEC();
-					temp[0].setGroup(false);
-				}
-			}
-		} else { // Bosses, rogues, or raiders depending on map
-			first.setEnemyType("Boss");
-			first.setBoss(true);
-			if (map.equals("Day")) {
-				if (map.equals("Customs")) { // Reshala or the Goons
-					random = (int) (Math.random() * (20)) + 1;
-					if (random > 15) { // One-quarter chance of the Goons
-						temp = createGoons();
-					} else { // Reshala
-						temp[0] = createBoss(map, time);
-					}
-				} else if (map.equals("Woods")) { // Shturman or the Goons
-					random = (int) (Math.random() * (20)) + 1;
-					if (random > 15) { // One-quarter chance of the Goons
-						temp = createGoons();
-					} else { // Shturman
-						temp[0] = createBoss(map, time);
-					}
-				} else if (map.equals("Shoreline")) { // Sanitar or the Goons
-					random = (int) (Math.random() * (20)) + 1;
-					if (random > 15) { // One-quarter chance of the Goons
-						temp = createGoons();
-					} else { // Sanitar
-						temp[0] = createBoss(map, time);
-					}
-				} else if (map.equals("Lighthouse")) { // Zryachiy, the Goons, or Rogues
-					random = (int) (Math.random() * (20)) + 1;
-					if (random < 6) { // One-quarter chance of the Goons
-						temp = createGoons();
-					} else if (random < 16) { // One-half chance of a squad of Rogues
-						temp = createRogues();
-					} else { // One-quarter chance of Zryachiy
-						temp[0] = createBoss(map, time);
-					}
-				} else if (map.equals("Reserve")) { // Glukhar or Raiders
-					random = (int) (Math.random() * (20)) + 1;
-					if (random < 16) { // Three-quarters chance of Raiders
-						temp = createRaiders();
-					} else { // One-quarter chance of Glukhar
-						temp[0] = createBoss(map, time);
-					}
-				}
-				else if (map.equals("Labs")) { // Raiders
-						temp = createRaiders();
-				}
-				temp[0] = createBoss(map, time);
-				if (temp[0].getGroup()) {
-					for (int i = 1; i < (temp[0].getFollowers() + 1); i++) {
-						temp[i] = createGuard();
-					}
-				}
-			}
+			PMCSquad(enemies);
+		} else { // Bosses, rogues, or raiders depending on map and time
+			specialEnemies(enemies, map, time);
 		}
-		first = null;
-		return temp;
+		return enemies;
+	}
+
+	public void scavGroup(Enemy[] group) {
+		Enemy first = new Enemy();
+		first.setEnemyType("Scav");
+		first.setBoss(false);
+		int random = (int) (Math.random() * 5) + 1;
+		if (random > 2) { // Three-fifths chance of a group of scavs (duo, trio, or squad)
+			first.setGroup(true);
+			random = (int) (Math.random() * 3) + 2;
+			for (int i = 0; i < random; i++) {
+				group[i] = createScav();
+				group[i].setGroup(true);
+			}
+		} else {
+			group[0] = createScav();
+			group[0].setGroup(false);
+		}
 	}
 
 	public Enemy createScav() {
@@ -312,16 +243,49 @@ public class Enemy {
 		scav.setFollowers(0);
 		int random = (int) (Math.random() * 17) + 3;
 		if (random != 19) { // Scav non-pistols indexes 3-18
-			scav.setPrimaryWeapon(scavWeapons[random]);
-			scav.setPrimary(scavWeapons[random]);
-			scav.setSecondaryWeapon("");
+			scav.setPrimaryName(scavWeapons[random]);
+			scav.setPrimary(new Gun(scavWeapons[random]));
+			scav.setSecondaryName("");
 		} else { // Scav pistols indexes 0-2
-			scav.setPrimaryWeapon("");
+			scav.setPrimaryName("");
 			random = (int) (Math.random() * 3);
-			scav.setSecondaryWeapon(scavWeapons[random]);
-			scav.setSecondary(scavWeapons[random]);
+			scav.setSecondaryName(scavWeapons[random]);
+			scav.setSecondary(new Gun(scavWeapons[random]));
 		}
 		return scav;
+	}
+
+	public void PMCSquad(Enemy[] squad) {
+		Enemy first = new Enemy();
+		first.setEnemyType("PMC");
+		first.setBoss(false);
+		int random = (int) (Math.random() * 5) + 1;
+		if (random > 4) { // One-fifth chance of a group of PMCs (duo, trio, or squad)
+			first.setGroup(true);
+			random = (int) (Math.random() * 3) + 2;
+			if (random == 1) { // BEAR squad
+				random = (int) (Math.random() * 4) + 1;
+				for (int i = 0; i < random; i++) {
+					squad[i] = createBEAR();
+					squad[i].setGroup(true);
+				}
+			} else { // USEC squad
+				random = (int) (Math.random() * 3) + 2;
+				for (int i = 0; i < random; i++) {
+					squad[i] = createUSEC();
+					squad[i].setGroup(true);
+				}
+			}
+		} else {
+			random = (int) (Math.random() * 2) + 1;
+			if (random == 1) { // Solo BEAR
+				squad[0] = createBEAR();
+				squad[0].setGroup(false);
+			} else { // Solo USEC
+				squad[0] = createUSEC();
+				squad[0].setGroup(false);
+			}
+		}
 	}
 
 	public Enemy createBEAR() {
@@ -340,14 +304,14 @@ public class Enemy {
 		bear.setFollowers(0);
 		int random = (int) (Math.random() * 24) + 3;
 		if (random != 26) { // BEAR non-pistols indexes 3-25
-			bear.setPrimaryWeapon(BEARWeapons[random]);
-			bear.setPrimary(BEARWeapons[random]);
-			bear.setSecondaryWeapon("");
+			bear.setPrimaryName(BEARWeapons[random]);
+			bear.setPrimary(new Gun(BEARWeapons[random]));
+			bear.setSecondaryName("");
 		} else { // BEAR pistols indexes 0-2
-			bear.setPrimaryWeapon("");
+			bear.setPrimaryName("");
 			random = (int) (Math.random() * 3);
-			bear.setSecondaryWeapon(BEARWeapons[random]);
-			bear.setSecondary(BEARWeapons[random]);
+			bear.setSecondaryName(BEARWeapons[random]);
+			bear.setSecondary(new Gun(BEARWeapons[random]));
 		}
 		return bear;
 	}
@@ -368,67 +332,286 @@ public class Enemy {
 		usec.setFollowers(0);
 		int random = (int) (Math.random() * 25) + 3;
 		if (random != 27) { // USEC non-pistols indexes 3-26
-			usec.setPrimaryWeapon(USECWeapons[random]);
-			usec.setPrimary(USECWeapons[random]);
-			usec.setSecondaryWeapon("");
+			usec.setPrimaryName(USECWeapons[random]);
+			usec.setPrimary(new Gun(USECWeapons[random]));
+			usec.setSecondaryName("");
 		} else { // USEC pistols indexes 0-2
-			usec.setPrimaryWeapon("");
+			usec.setPrimaryName("");
 			random = (int) (Math.random() * 3);
-			usec.setSecondaryWeapon(USECWeapons[random]);
-			usec.setSecondary(USECWeapons[random]);
+			usec.setSecondaryName(USECWeapons[random]);
+			usec.setSecondary(new Gun(USECWeapons[random]));
 		}
 		return usec;
 	}
 
-	/*
-	 * Raiders will appear in squads of four. They primarily spawn in the Labs, but
-	 * have appeared in the Reserve. They are stronger than typical scavengers and
-	 * will have a larger health pool. They also have better aim.
-	 */
-	public Enemy[] createRaiders() {
-		Enemy[] raiders = new Enemy[4];
-		for (int i = 0; i < 4; i++) {
-			Enemy temp = new Enemy();
-			temp.setName("The raider");
-			temp.setEnemyType("Raiders");
-			temp.setFaction("Scavengers");
-			temp.setTotalHealth(752);
-			temp.setHeadHealth(42);
-			temp.setBodyHealth(710);
-			temp.setRaiders(false);
-			temp.setRogues(true);
-			temp.setGoons(false);
-			temp.setBoss(true);
-			temp.setGroup(true);
-			temp.setFollowers(0);
-			int random = (int) (Math.random() * 15);
-			temp.setPrimaryWeapon(raiderWeapons[random]);
-			temp.setPrimary(raiderWeapons[random]);
+	public void specialEnemies(Enemy[] enemies, String map, String time) {
+		Enemy first = new Enemy();
+		first.setEnemyType("Boss");
+		first.setBoss(true);
+		if (time.equals("Day")) {
+			switch (map) {
+			case "Customs":
+				int random = (int) (Math.random() * (20)) + 1;
+				if (random > 15) { // One-quarter chance of the Goons
+					createGoons(enemies);
+				} else { // Reshala
+					bossGroup(enemies, map, time);
+				}
+				break;
+			case "Woods":
+				random = (int) (Math.random() * (20)) + 1;
+				if (random > 15) { // One-quarter chance of the Goons
+					createGoons(enemies);
+				} else { // Shturman
+					bossGroup(enemies, map, time);
+				}
+				break;
+			case "Shoreline":
+				random = (int) (Math.random() * (20)) + 1;
+				if (random > 15) { // One-quarter chance of the Goons
+					createGoons(enemies);
+				} else { // Sanitar
+					bossGroup(enemies, map, time);
+				}
+				break;
+			case "Lighthouse":
+				random = (int) (Math.random() * (20)) + 1;
+				if (random < 6) { // One-quarter chance of the Goons
+					createGoons(enemies);
+				} else if (random < 16) { // One-half chance of a squad of Rogues
+					rogueSquad(enemies);
+				} else { // One-quarter chance of Zryachiy
+					bossGroup(enemies, map, time);
+				}
+				break;
+			case "Reserve":
+				random = (int) (Math.random() * (20)) + 1;
+				if (random < 16) { // Three-quarters chance of Raiders
+					raiderSquad(enemies);
+				} else { // One-quarter chance of Glukhar
+					bossGroup(enemies, map, time);
+				}
+				break;
+			case "Labs":
+				raiderSquad(enemies);
+			}
+		} else if (time.equals("Night")) {
+
 		}
-		return raiders;
 	}
 
-	public Enemy[] createRogues() {
-		Enemy[] rogues = new Enemy[4];
+	public void raiderSquad(Enemy[] squad) {
 		for (int i = 0; i < 4; i++) {
-			Enemy temp = new Enemy();
-			temp.setName("The rogue");
-			temp.setEnemyType("Boss");
-			temp.setFaction("Rogues");
-			temp.setTotalHealth(780);
-			temp.setHeadHealth(40);
-			temp.setBodyHealth(740);
-			temp.setRaiders(false);
-			temp.setRogues(true);
-			temp.setGoons(false);
-			temp.setBoss(true);
-			temp.setGroup(true);
-			temp.setFollowers(0);
-			int random = (int) (Math.random() * 6);
-			temp.setPrimaryWeapon(rogueWeapons[random]);
-			temp.setPrimary(rogueWeapons[random]);
+			squad[i] = createRaider();
 		}
-		return rogues;
+	}
+
+	public Enemy createRaider() {
+		Enemy raider = new Enemy();
+		raider.setName("The raider");
+		raider.setEnemyType("Raiders");
+		raider.setFaction("Scavengers");
+		raider.setTotalHealth(752);
+		raider.setHeadHealth(42);
+		raider.setBodyHealth(710);
+		raider.setRaiders(false);
+		raider.setRogues(true);
+		raider.setGoons(false);
+		raider.setBoss(true);
+		raider.setGroup(true);
+		raider.setFollowers(0);
+		int random = (int) (Math.random() * 15);
+		raider.setPrimaryName(raiderWeapons[random]);
+		raider.setPrimary(new Gun(raiderWeapons[random]));
+		return raider;
+	}
+
+	public void rogueSquad(Enemy[] squad) {
+		for (int i = 0; i < 4; i++) {
+			squad[i] = createRogue();
+		}
+	}
+
+	public Enemy createRogue() {
+		Enemy rogue = new Enemy();
+		rogue.setName("The rogue");
+		rogue.setEnemyType("Boss");
+		rogue.setFaction("Rogues");
+		rogue.setTotalHealth(780);
+		rogue.setHeadHealth(40);
+		rogue.setBodyHealth(740);
+		rogue.setRaiders(false);
+		rogue.setRogues(true);
+		rogue.setGoons(false);
+		rogue.setBoss(true);
+		rogue.setGroup(true);
+		rogue.setFollowers(0);
+		int random = (int) (Math.random() * 6);
+		rogue.setPrimaryName(rogueWeapons[random]);
+		rogue.setPrimary(new Gun(rogueWeapons[random]));
+		return rogue;
+	}
+
+	public void bossGroup(Enemy[] group, String map, String time) {
+		Enemy boss = new Enemy();
+		boss.setEnemyType("Boss");
+		boss.setFaction("Scavengers");
+		boss.setBoss(true);
+		if (time.equals("Day")) { // Daytime bosses
+			if (map.equals("Factory")) { // Tagilla
+				boss.setName("Tagilla");
+				boss.setTotalHealth(1220);
+				boss.setHeadHealth(100);
+				boss.setBodyHealth(1120);
+				boss.setRaiders(false);
+				boss.setRogues(false);
+				boss.setGoons(false);
+				boss.setGroup(false);
+				boss.setFollowers(0);
+				int random = (int) (Math.random() * 2) + 1;
+				if (random == 1) {
+					boss.setPrimaryName("Saiga-12K"); // 12 Gauge
+					boss.setPrimary(new Gun("Saiga-12K"));
+					boss.setSecondaryName("Dead Blow Hammer");
+				} else {
+					boss.setPrimaryName("AKS-74U"); // 5.45x39mm
+					boss.setPrimary(new Gun("AKS-74U"));
+					boss.setSecondaryName("Dead Blow Hammer");
+				}
+			}
+			if (map.equals("Interchange")) { // Killa
+				boss.setName("Killa");
+				boss.setTotalHealth(890);
+				boss.setHeadHealth(70);
+				boss.setBodyHealth(820);
+				boss.setRaiders(false);
+				boss.setRogues(false);
+				boss.setGoons(false);
+				boss.setGroup(false);
+				boss.setFollowers(0);
+				boss.setPrimaryName("RPK-16"); // 5.45x39mm
+				boss.setPrimary(new Gun("RPK-16"));
+			}
+			if (map.equals("Reserve")) { // Glukhar
+				boss.setName("Glukhar");
+				boss.setTotalHealth(1010);
+				boss.setHeadHealth(70);
+				boss.setBodyHealth(940);
+				boss.setRaiders(false);
+				boss.setRogues(false);
+				boss.setGoons(false);
+				boss.setGroup(true);
+				boss.setFollowers(3);
+				boss.setPrimaryName("ASh-12"); // 12.7x55mm
+				boss.setPrimary(new Gun("ASh-12"));
+			}
+			if (map.equals("Streets")) { // Kaban or Kollontay
+				int random = (int) (Math.random() * (20)) + 1;
+				if (random < 11) { // Kaban
+					boss.setName("Kaban");
+					boss.setTotalHealth(1300);
+					boss.setHeadHealth(85);
+					boss.setBodyHealth(1215);
+					boss.setRaiders(false);
+					boss.setRogues(false);
+					boss.setGoons(false);
+					boss.setGroup(true);
+					boss.setFollowers(3);
+					random = (int) (Math.random() * 2) + 1;
+					if (random == 1) {
+						boss.setPrimaryName("PKM"); // 7.62x54R
+						boss.setPrimary(new Gun("PKM"));
+					} else {
+						boss.setPrimaryName("PKP"); // 7.62x54R
+						boss.setPrimary(new Gun("PKP"));
+					}
+				} else { // Kollontay
+					boss.setName("Kollontay");
+					boss.setTotalHealth(1055);
+					boss.setHeadHealth(65);
+					boss.setBodyHealth(990);
+					boss.setRaiders(false);
+					boss.setRogues(false);
+					boss.setGoons(false);
+					boss.setGroup(true);
+					boss.setFollowers(3);
+					if (random == 1) {
+						boss.setPrimaryName("RPD"); // 7.62x39mm
+						boss.setPrimary(new Gun("RPD"));
+						boss.setSecondaryName("PR-Taran Baton");
+					} else {
+						boss.setPrimaryName("RPDN"); // 7.62x39mm
+						boss.setPrimary(new Gun("RPDN"));
+						boss.setSecondaryName("PR-Taran Baton");
+					}
+				}
+			}
+			if (map.equals("Customs")) { // Reshala
+				boss.setName("Reshala");
+				boss.setTotalHealth(812);
+				boss.setHeadHealth(62);
+				boss.setBodyHealth(750);
+				boss.setRaiders(false);
+				boss.setRogues(false);
+				boss.setGoons(false);
+				boss.setGroup(true);
+				boss.setFollowers(3);
+				boss.setPrimaryName("AK-101"); // 5.56x45mm
+				boss.setPrimary(new Gun("AK-101"));
+				boss.setSecondaryName("Golden TT-33"); // 7.62x25mm
+				boss.setSecondary(new Gun("Golden TT-33"));
+			}
+			if (map.equals("Woods")) { // Shturman
+				boss.setName("Shturman");
+				boss.setTotalHealth(812);
+				boss.setHeadHealth(62);
+				boss.setBodyHealth(750);
+				boss.setRaiders(false);
+				boss.setRogues(false);
+				boss.setGoons(false);
+				boss.setGroup(true);
+				boss.setFollowers(2);
+				boss.setPrimaryName("SVDS"); // 7.62x54R
+				boss.setPrimary(new Gun("SVDS"));
+				boss.setSecondaryName("Red Rebel Icepick");
+			}
+			if (map.equals("Shoreline")) { // Sanitar
+				boss.setName("Sanitar");
+				boss.setTotalHealth(812);
+				boss.setHeadHealth(62);
+				boss.setBodyHealth(750);
+				boss.setRaiders(false);
+				boss.setRogues(false);
+				boss.setGoons(false);
+				boss.setGroup(true);
+				boss.setFollowers(3);
+				boss.setPrimaryName("VSS Vintorez"); // 9x39mm
+				boss.setPrimary(new Gun("VSS Vintorez"));
+			}
+			if (map.equals("Lighthouse")) { // Zryachiy or Rogues
+				int random = (int) (Math.random() * (20)) + 1;
+				if (random < 5) { // Zryachiy
+					boss.setName("Zryachiy");
+					boss.setTotalHealth(812);
+					boss.setHeadHealth(62);
+					boss.setBodyHealth(750);
+					boss.setRaiders(false);
+					boss.setRogues(false);
+					boss.setGoons(false);
+					boss.setGroup(true);
+					boss.setFollowers(2);
+					boss.setPrimaryName("SVDS"); // 7.62x54R
+					boss.setPrimary(new Gun("SVDS"));
+				}
+			}
+		} else { // Nighttime bosses and cultists
+
+		}
+		if (group[0].getGroup()) {
+			for (int i = 1; i < (boss.getFollowers() + 1); i++) {
+				group[i] = createGuard();
+			}
+		}
 	}
 
 	public Enemy createGuard() { // Followers of the Boss
@@ -448,178 +631,19 @@ public class Enemy {
 		int random = (int) (Math.random() * 2) + 1;
 		if (random == 1) { // USEC weaponry
 			random = (int) (Math.random() * 25) + 3;
-			guard.setPrimaryWeapon(USECWeapons[random]);
-			guard.setPrimary(USECWeapons[random]);
-			guard.setSecondaryWeapon("");
+			guard.setPrimaryName(USECWeapons[random]);
+			guard.setPrimary(new Gun(USECWeapons[random]));
+			guard.setSecondaryName("");
 		} else { // BEAR weaponry
 			random = (int) (Math.random() * 24) + 3;
-			guard.setPrimaryWeapon(BEARWeapons[random]);
-			guard.setPrimary(BEARWeapons[random]);
-			guard.setSecondaryWeapon("");
+			guard.setPrimaryName(BEARWeapons[random]);
+			guard.setPrimary(new Gun(BEARWeapons[random]));
+			guard.setSecondaryName("");
 		}
 		return guard;
 	}
 
-	public Enemy createBoss(String map, String time) {
-		Enemy boss = new Enemy();
-		boss.setEnemyType("Boss");
-		boss.setFaction("Scavengers");
-		boss.setBoss(true);
-		if (time.equals("Day")) { // Daytime bosses
-			if (map.equals("Factory")) { // Tagilla
-				boss.setName("Tagilla");
-				boss.setTotalHealth(1220);
-				boss.setHeadHealth(100);
-				boss.setBodyHealth(1120);
-				boss.setRaiders(false);
-				boss.setRogues(false);
-				boss.setGoons(false);
-				boss.setGroup(false);
-				boss.setFollowers(0);
-				int random = (int) (Math.random() * 2) + 1;
-				if (random == 1) {
-					boss.setPrimaryWeapon("Saiga-12K"); // 12 Gauge
-					boss.setPrimary("Saiga-12K");
-					boss.setSecondaryWeapon("Dead Blow Hammer");
-				} else {
-					boss.setPrimaryWeapon("AKS-74U"); // 5.45x39mm
-					boss.setPrimary("AKS-74U");
-					boss.setSecondaryWeapon("Dead Blow Hammer");
-				}
-			}
-			if (map.equals("Interchange")) { // Killa
-				boss.setName("Killa");
-				boss.setTotalHealth(890);
-				boss.setHeadHealth(70);
-				boss.setBodyHealth(820);
-				boss.setRaiders(false);
-				boss.setRogues(false);
-				boss.setGoons(false);
-				boss.setGroup(false);
-				boss.setFollowers(0);
-				boss.setPrimaryWeapon("RPK-16"); // 5.45x39mm
-				boss.setPrimary("RPK-16");
-			}
-			if (map.equals("Reserve")) { // Glukhar
-				boss.setName("Glukhar");
-				boss.setTotalHealth(1010);
-				boss.setHeadHealth(70);
-				boss.setBodyHealth(940);
-				boss.setRaiders(false);
-				boss.setRogues(false);
-				boss.setGoons(false);
-				boss.setGroup(true);
-				boss.setFollowers(3);
-				boss.setPrimaryWeapon("ASh-12"); // 12.7x55mm
-				boss.setPrimary("ASh-12");
-			}
-			if (map.equals("Streets")) { // Kaban or Kollontay
-				int random = (int) (Math.random() * (20)) + 1;
-				if (random < 11) { // Kaban
-					boss.setName("Kaban");
-					boss.setTotalHealth(1300);
-					boss.setHeadHealth(85);
-					boss.setBodyHealth(1215);
-					boss.setRaiders(false);
-					boss.setRogues(false);
-					boss.setGoons(false);
-					boss.setGroup(true);
-					boss.setFollowers(3);
-					random = (int) (Math.random() * 2) + 1;
-					if (random == 1) {
-						boss.setPrimaryWeapon("PKM"); // 7.62x54R
-						boss.setPrimary("PKM");
-					} else {
-						boss.setPrimaryWeapon("PKP"); // 7.62x54R
-						boss.setPrimary("PKP");
-					}
-				} else { // Kollontay
-					boss.setName("Kollontay");
-					boss.setTotalHealth(1055);
-					boss.setHeadHealth(65);
-					boss.setBodyHealth(990);
-					boss.setRaiders(false);
-					boss.setRogues(false);
-					boss.setGoons(false);
-					boss.setGroup(true);
-					boss.setFollowers(3);
-					if (random == 1) {
-						boss.setPrimaryWeapon("RPD"); // 7.62x39mm
-						boss.setPrimary("RPD");
-						boss.setSecondaryWeapon("PR-Taran Baton");
-					} else {
-						boss.setPrimaryWeapon("RPDN"); // 7.62x39mm
-						boss.setPrimary("RPDN");
-						boss.setSecondaryWeapon("PR-Taran Baton");
-					}
-				}
-			}
-			if (map.equals("Customs")) { // Reshala
-				boss.setName("Reshala");
-				boss.setTotalHealth(812);
-				boss.setHeadHealth(62);
-				boss.setBodyHealth(750);
-				boss.setRaiders(false);
-				boss.setRogues(false);
-				boss.setGoons(false);
-				boss.setGroup(true);
-				boss.setFollowers(3);
-				boss.setPrimaryWeapon("AK-101"); // 5.56x45mm
-				boss.setPrimary("AK-101");
-				boss.setSecondaryWeapon("Golden TT-33"); // 7.62x25mm
-				boss.setSecondary("Golden TT-33");
-			}
-			if (map.equals("Woods")) { // Shturman
-				boss.setName("Shturman");
-				boss.setTotalHealth(812);
-				boss.setHeadHealth(62);
-				boss.setBodyHealth(750);
-				boss.setRaiders(false);
-				boss.setRogues(false);
-				boss.setGoons(false);
-				boss.setGroup(true);
-				boss.setFollowers(2);
-				boss.setPrimaryWeapon("SVDS"); // 7.62x54R
-				boss.setPrimary("SVDS");
-				boss.setSecondaryWeapon("Red Rebel Icepick");
-			}
-			if (map.equals("Shoreline")) { // Sanitar
-				boss.setName("Sanitar");
-				boss.setTotalHealth(812);
-				boss.setHeadHealth(62);
-				boss.setBodyHealth(750);
-				boss.setRaiders(false);
-				boss.setRogues(false);
-				boss.setGoons(false);
-				boss.setGroup(true);
-				boss.setFollowers(3);
-				boss.setPrimaryWeapon("VSS Vintorez"); // 9x39mm
-				boss.setPrimary("VSS Vintorez");
-			}
-			if (map.equals("Lighthouse")) { // Zryachiy or Rogues
-				int random = (int) (Math.random() * (20)) + 1;
-				if (random < 5) { // Zryachiy
-					boss.setName("Zryachiy");
-					boss.setTotalHealth(812);
-					boss.setHeadHealth(62);
-					boss.setBodyHealth(750);
-					boss.setRaiders(false);
-					boss.setRogues(false);
-					boss.setGoons(false);
-					boss.setGroup(true);
-					boss.setFollowers(2);
-					boss.setPrimaryWeapon("SVDS"); // 7.62x54R
-					boss.setPrimary("SVDS");
-				}
-			}
-		} else { // Nighttime bosses and cultists
-
-		}
-		return boss;
-	}
-
-	public Enemy[] createGoons() { // The Goons
-		Enemy[] goons = new Enemy[4];
+	public Enemy[] createGoons(Enemy[] goons) { // The Goons
 		Enemy knight = new Enemy();
 		knight.setName("Knight");
 		knight.setEnemyType("Boss");
@@ -633,10 +657,10 @@ public class Enemy {
 		knight.setBoss(true);
 		knight.setGroup(true);
 		knight.setFollowers(0);
-		knight.setPrimaryWeapon("Mk47 Mutant"); // 7.62x39mm
-		knight.setPrimary("Mk47 Mutant");
-		knight.setSecondaryWeapon("Glock 18C"); // 9x19mm
-		knight.setSecondary("Glock 18C");
+		knight.setPrimaryName("Mk47 Mutant"); // 7.62x39mm
+		knight.setPrimary(new Gun("Mk47 Mutant"));
+		knight.setSecondaryName("Glock 18C"); // 9x19mm
+		knight.setSecondary(new Gun("Glock 18C"));
 		goons[0] = knight;
 		Enemy bigPipe = new Enemy();
 		bigPipe.setName("Big Pipe");
@@ -651,10 +675,10 @@ public class Enemy {
 		bigPipe.setBoss(true);
 		bigPipe.setGroup(true);
 		bigPipe.setFollowers(0);
-		bigPipe.setPrimaryWeapon("MCX"); // .300
-		bigPipe.setPrimary("MCX");
-		bigPipe.setSecondaryWeapon("M32A1 MSGL"); // 40x46mm
-		bigPipe.setSecondary("M32A1 MSGL");
+		bigPipe.setPrimaryName("MCX"); // .300
+		bigPipe.setPrimary(new Gun("MCX"));
+		bigPipe.setSecondaryName("M32A1 MSGL"); // 40x46mm
+		bigPipe.setSecondary(new Gun("M32A1 MSGL"));
 		goons[1] = bigPipe;
 		Enemy birdeye = new Enemy();
 		birdeye.setName("Birdeye");
@@ -669,15 +693,31 @@ public class Enemy {
 		birdeye.setBoss(true);
 		birdeye.setGroup(true);
 		birdeye.setFollowers(0);
-		birdeye.setPrimaryWeapon("RSASS"); // 7.62x51mm
-		birdeye.setPrimary("RSASS");
-		birdeye.setSecondaryWeapon("M9A3"); // 9x19mm
-		birdeye.setSecondary("M9A3");
+		birdeye.setPrimaryName("RSASS"); // 7.62x51mm
+		birdeye.setPrimary(new Gun("RSASS"));
+		birdeye.setSecondaryName("M9A3"); // 9x19mm
+		birdeye.setSecondary(new Gun("M9A3"));
 		goons[2] = birdeye;
 		return goons;
 	}
 
 	public void shoot() {
+
+	}
+
+	public void cover() {
+
+	}
+
+	public void suppress() {
+
+	}
+
+	public void reload() {
+
+	}
+
+	public void die() {
 
 	}
 }
