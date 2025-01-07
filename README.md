@@ -1,5 +1,5 @@
 # Tactical-Extraction-Shooter-Text
-Tactical Extraciton Shooter Text (TEST) is a text-based game loosely based on modern extraction shooters.
+Tactical Extraction Shooter Text (TEST) is a text-based game loosely based on modern extraction shooters.
 This is a current work-in-progress with temporary placeholding names as I develop it.
 
 There may be some things you may recognize from mainstream games.
