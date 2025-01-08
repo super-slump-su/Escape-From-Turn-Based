@@ -1,39 +1,11 @@
 package game;
 
-public class Gun {
+public class Ammo {
 	private String name;
-	private String range; // Effective range (short, medium, long)
-	private int capacity; // Default magazine capacity
-	private String caliber; // Caliber bullet used
-	private Ammo ammunition; // Specific bullet variant
-	private String[][] nineM = { { "PM SP7 GZH", "PM PPE GZH", "PM PBM GZH" }, // 9x18mm rounds indexes 0-2 of row 0
-			{ "RIP", "Quakemaker", "PST GZH", "PBP GZH" }, // 9x19mm rounds indexes 0-3 of row 1
-			{ "PE GZH", "BT GZH", "7N42" }, // 9x21mm rounds indexes 0-2 of row 2
-			{ "SP-5 GS", "SP-6 GS", "BP GS" } }; // 9x39mm rounds indexes 0-2 of row 3
-	private String[] fortyFive = { "RIP", "ACP Match FMJ", "ACP AP" }; // .45 rounds indexes 0-2
-	private String[] fourSix = { "Action SX", "FMJ SX", "AP SX" }; // 4.6x30mm rounds indexes 0-2
-	private String[] fiveSeven = { "SS198LF", "L191 Tracer", "SS190" }; // 5.7x28mm rounds indexes 0-2
-	private String[] twelveG = { "Magnum Buckshot", "Flechette", "RIP", "AP-20 Slug" }; // 12 Gauge indexes 0-3
-	private String[] twentyG = { "5.6 Buckshot", "Poleva-6u Slug" }; // 20 Gauge indexes 0-1
-	private String[] twentyThree = { "Shrapnel-10 Buckshot", "Barrikada Slug", // Normal 23x75mm indexes 0-1
-			"Zveda Flashbang Round" }; // Special flashbang round index 2
-	private String[] threeSixSix = { "TKM Geksa", "TKM EKO", "TKM AP-M" }; // .366 rounds indexes 0-2
-	private String[] fiveFourFive = { "PRS GS", "PS GS", "BT GS", "7N40", "BP GS", "BS GS", "PPBS GS Igolnik" };
-	// 5.45x39mm rounds indexes 0-6
-	private String[] fiveFiveSix = { "Warmageddon", "M856", "M855", "M856A1", "M855A1", "M995", "SSA AP" };
-	// 5.56x45mm rounds indexes 0-6
-	private String[][] sevenSixTwo = { { "TT LRNPC", "TT AKBS", "TT PST GZH" }, // 7.62x25mm rounds indexes 0-2 of row 0
-			{ "HP", "T-45M1 GZH", "PS GZH", "BP GZH", "MAI AP" }, // 7.62x39mm rounds indexes 0-4 of row 1
-			{ "Ultra Nosler", "M80", "M61", "M993" }, // 7.62x51mm rounds indexes 0-3 of row 2
-			{ "HP BT Tracer", "T-46M GZH", "SNB GZH", "BS GS" } }; // 7.62x54R rounds indexes 0-3 of row 3
-	private String[] threeHundred = { "Blackout Whisper", "Blackout BCP FMJ", "Blackout CBJ", "Blackout AP" };
-	// .300 rounds indexes 0-3
-	private String[] sixEight = { "SIG FMJ", "SIG Hybrid" }; // 6.8x51mm rounds indexes 0-1
-	private String[] twelveSeven = { "PS12A", "PS12", "PS12B" }; // 12.7x55mm rounds indexes 0-2
-	private String[] threeThreeEight = { "TAC-X", "UCW", "FMJ", "AP" }; // .338 Lapua Magnum rounds indexes 0-3
-	private String[] fortyMM = { "M381 HE", "M433 HEDP", "M576 MP-APERS",
-			// 40x46mm grenade launcher cartridges indexes 0-2
-			"VOG-25" }; // 40x53mm grenade launcher cartridge index 3
+	private String size;
+	private int projectiles; // Projectiles per shot fired, changes for grenades and some shotgun shells
+	private int fleshDamage; // Hits unarmored body parts
+	private int penetrationPower; // Damage modifier when bullet hits armored body parts, changes for different armor classes
 	/*
 	 * Various accessor and modifier methods for above instance variables.
 	 */
@@ -46,543 +18,511 @@ public class Gun {
 		this.name = name;
 	}
 
-	public String getRange() {
-		return range;
+	public String getSize() {
+		return size;
 	}
 
-	public void setRange(String range) {
-		this.range = range;
+	public void setSize(String size) {
+		this.size = size;
 	}
 
-	public String getCaliber() {
-		return caliber;
+	public int getProjectiles() {
+		return projectiles;
 	}
 
-	public void setCaliber(String caliber) {
-		this.caliber = caliber;
+	public void setProjectiles(int projectiles) {
+		this.projectiles = projectiles;
 	}
 
-	public int getCapacity() {
-		return capacity;
+	public int getFleshDamage() {
+		return fleshDamage;
 	}
 
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
+	public void setFleshDamage(int fleshDamage) {
+		this.fleshDamage = fleshDamage;
 	}
 
-	public Ammo getAmmunition() {
-		return ammunition;
+	public int getPenetrationPower() {
+		return penetrationPower;
 	}
 
-	public void setAmmunition(Ammo ammunition) {
-		this.ammunition = ammunition;
+	public void setPenetrationPower(int penetrationPower) {
+		this.penetrationPower = penetrationPower;
 	}
 
-	public Gun(String weapon) {
-		this.setName(weapon);
-		if (weapon.equals("PM") || weapon.equals("PP-91")) { // 9x18mm
-			this.NineEighteen();
-		} else if (weapon.equals("MP-443") || weapon.equals("Glock 17")
-				|| weapon.equals("Glock 18C") || weapon.equals("M9A3")
-				|| weapon.equals("Saiga-9") || weapon.equals("STM-9")
-				|| weapon.equals("PP-19-01") || weapon.equals("MP5") || weapon.equals("MP9")
-				|| weapon.equals("MPX") || weapon.equals("Vector")) { // 9x19mm
-			this.NineNineteen();
-		} else if (weapon.equals("SR-1MP")) { // 9x21mm
-			this.NineTwentyOne();
-		} else if (weapon.equals("KBP 9A-91") || weapon.equals("AS-VAL")
-				|| weapon.equals("VSS Vintorez")) { // 9x39mm
-			this.NineThirtyNine();
-		} else if (weapon.equals("UMP")) { // .45
-			this.FortyFive();
-		} else if (weapon.equals("MP7A2")) { // 4.6x30mm
-			this.FourSix();
-		} else if (weapon.equals("FN 5-7") || weapon.equals("FN P90")) { // 5.7x28mm
-			this.FiveSeven();
-		} else if (weapon.equals("MP-133") || weapon.equals("MP-153")
-				|| weapon.equals("Saiga-12K") || weapon.equals("M870")
-				|| weapon.equals("M590A1") || weapon.equals("M3 Super 90")) { // 12 Gauge
-			this.TwelveGauge();
-		} else if (weapon.equals("TOZ-106")) { // 20 Gauge
-			this.TwentyGauge();
-		} else if (weapon.equals("KS-23M")) { // 23x75mm
-			this.TwentyThreeGauge();
-		} else if (weapon.equals("VPO-215")) { // .366
-			this.ThreeSixSix();
-		} else if (weapon.equals("AKS-74U") || weapon.equals("AK-74") || weapon.equals("AK-74M")
-				|| weapon.equals("AK-105") || weapon.equals("AK-12")
-				|| weapon.equals("RPK-16")) { // 5.45x39mm
-			this.FiveFourFive();
-		} else if (weapon.equals("ADAR 2-15") || weapon.equals("TX-15")
-				|| weapon.equals("AK-101") || weapon.equals("AK-104") || weapon.equals("M4A1")
-				|| weapon.equals("Aug A3") || weapon.equals("HK 416A5")) { // 5.56x45mm
-			this.FiveFiveSix();
-		} else if (weapon.equals("PPSh-41") || weapon.equals("Golden TT-33")) { // 7.62x25mm
-			this.SevenTwentyFive();
-		} else if (weapon.equals("SKS") || weapon.equals("VPO-136") || weapon.equals("AKM")
-				|| weapon.equals("AK-104") || weapon.equals("RPD") || weapon.equals("RPDN")
-				|| weapon.equals("Mk47 Mutant")) { // 7.62x39mm
-			this.SevenThirtyNine();
-		} else if (weapon.equals("VPO-101") || weapon.equals("MDR") || weapon.equals("SCAR-L")
-				|| weapon.equals("SA-58") || weapon.equals("RFB") || weapon.equals("SR-25")
-				|| weapon.equals("M1A") || weapon.equals("G28") || weapon.equals("RSASS")
-				|| weapon.equals("M700") || weapon.equals("DVL-10")
-				|| weapon.equals("T-5000")) { // 7.62x51mm
-			this.SevenFiftyOne();
-		} else if (weapon.equals("Mosin") || weapon.equals("SV-98") || weapon.equals("SVDS")
-				|| weapon.equals("PKM") || weapon.equals("PKP")) { // 7.62x54R
-			this.SevenFiftyFour();
-		} else if (weapon.equals("MCX")) { // .300
-			this.ThreeHundred();
-		} else if (weapon.equals("MCX Spear")) { // 6.8x51mm
-			this.SixEight();
-		} else if (weapon.equals("ASh-12")) { // 12.7x55mm
-			this.TwelveSeven();
-		} else if (weapon.equals("AXMC")) { // .338 Lapua
-			this.ThreeThreeEight();
-		}
-	}
-
-	private void NineEighteen() { // Method encompassing 9x18mm caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 3;
-		this.setAmmunition(temp.nineM(nineM[0][random]));
-		switch (this.getName()) {
-		case "PM":
-			this.setCapacity(8);
-			this.setRange("Low");
+	public Ammo nineM(String bulletName) { // 9xXXmm
+		Ammo bullet = new Ammo();
+		bullet.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "PM SP7 GZH": // 9x18mm
+			bullet.setFleshDamage(77);
+			bullet.setPenetrationPower(2);
 			break;
-		case "PP-91":
-			this.setCapacity(20);
-			this.setRange("Low");
+		case "PM PPE GZH": // 9x18mm
+			bullet.setFleshDamage(61);
+			bullet.setPenetrationPower(7);
+			break;
+		case "PM PBM GZH": // 9x18mm
+			bullet.setFleshDamage(40);
+			bullet.setPenetrationPower(28);
+			break;
+		case "RIP": // 9x19mm
+			bullet.setFleshDamage(102);
+			bullet.setPenetrationPower(2);
+			break;
+		case "Quakemaker": // 9x19mm
+			bullet.setFleshDamage(85);
+			bullet.setPenetrationPower(8);
+			break;
+		case "PST GZH": // 9x19mm
+			bullet.setFleshDamage(54);
+			bullet.setPenetrationPower(20);
+			break;
+		case "PBP GZH": // 9x19mm
+			bullet.setFleshDamage(52);
+			bullet.setPenetrationPower(39);
+			break;
+		case "PE GZH": // 9x21mm
+			bullet.setFleshDamage(80);
+			bullet.setPenetrationPower(15);
+			break;
+		case "BT GZH": // 9x21mm
+			bullet.setFleshDamage(49);
+			bullet.setPenetrationPower(23);
+			break;
+		case "7N42": // 9x21mm
+			bullet.setFleshDamage(45);
+			bullet.setPenetrationPower(38);
+			break;
+		case "SP-5 GS": // 9x39mm
+			bullet.setFleshDamage(71);
+			bullet.setPenetrationPower(28);
+			break;
+		case "SP-6 GS": // 9x39mm
+			bullet.setFleshDamage(60);
+			bullet.setPenetrationPower(48);
+			break;
+		case "BP GS": // 9x39mm
+			bullet.setFleshDamage(58);
+			bullet.setPenetrationPower(54);
 			break;
 		}
+		return bullet;
 	}
 
-	private void NineNineteen() { // Method encompassing 9x19mm caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 4;
-		this.setAmmunition(temp.nineM(nineM[1][random]));
-		switch (this.getName()) {
-		case "MP-443":
-			this.setCapacity(18);
-			this.setRange("Low");
+	public Ammo fortyFive(String bulletName) { // .45
+		Ammo bullet = new Ammo();
+		bullet.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "RIP":
+			bullet.setFleshDamage(130);
+			bullet.setPenetrationPower(3);
 			break;
-		case "Glock 17":
-			this.setCapacity(17);
-			this.setRange("Low");
+		case "ACP Match FMJ":
+			bullet.setFleshDamage(72);
+			bullet.setPenetrationPower(25);
 			break;
-		case "Glock 18C":
-			this.setCapacity(17);
-			this.setRange("Low");
-			break;
-		case "M9A3":
-			this.setCapacity(17);
-			this.setRange("Low");
-			break;
-		case "Saiga-9":
-			this.setCapacity(30);
-			this.setRange("Medium");
-			break;
-		case "STM-9":
-			this.setCapacity(33);
-			this.setRange("Medium");
-			break;
-		case "PP-19-01":
-			this.setCapacity(30);
-			this.setRange("Medium");
-			break;
-		case "MP5":
-			this.setCapacity(30);
-			this.setRange("Medium");
-			break;
-		case "MP9":
-			this.setCapacity(25);
-			this.setRange("Medium");
-			break;
-		case "MPX":
-			this.setCapacity(30);
-			this.setRange("Medium");
-			break;
-		case "Vector":
-			this.setCapacity(33);
-			this.setRange("Medium");
+		case "ACP AP":
+			bullet.setFleshDamage(66);
+			bullet.setPenetrationPower(38);
 			break;
 		}
+		return bullet;
 	}
 
-	private void NineTwentyOne() { // Method encompassing 9x21mm caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 3;
-		this.setAmmunition(temp.nineM(nineM[2][random]));
-		if (this.getName().equals("SP-1MP")) {
-			this.setCapacity(18);
-			this.setRange("Low");
+	public Ammo fourSix(String bulletName) { // 4.6x30mm
+		Ammo bullet = new Ammo();
+		bullet.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "Action SX":
+			bullet.setFleshDamage(65);
+			bullet.setPenetrationPower(18);
+			break;
+		case "FMJ SX":
+			bullet.setFleshDamage(43);
+			bullet.setPenetrationPower(40);
+			break;
+		case "AP SX":
+			bullet.setFleshDamage(35);
+			bullet.setPenetrationPower(53);
+			break;
 		}
+		return bullet;
 	}
 
-	private void NineThirtyNine() { // Method encompassing 9x39mm caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 3;
-		this.setAmmunition(temp.nineM(nineM[3][random]));
-		switch (this.getName()) {
-		case "KBP 9A-91":
-			this.setCapacity(20);
-			this.setRange("Medium");
+	public Ammo fiveSeven(String bulletName) { // 5.7x28mm
+		Ammo bullet = new Ammo();
+		bullet.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "SS198LF":
+			bullet.setFleshDamage(70);
+			bullet.setPenetrationPower(17);
 			break;
-		case "AS-VAL":
-			this.setCapacity(30);
-			this.setRange("Medium");
+		case "L191 Tracer":
+			bullet.setFleshDamage(53);
+			bullet.setPenetrationPower(33);
 			break;
-		case "VSS Vintorez":
-			this.setCapacity(20);
-			this.setRange("Medium");
+		case "SS190":
+			bullet.setFleshDamage(49);
+			bullet.setPenetrationPower(37);
 			break;
 		}
+		return bullet;
 	}
 
-	private void FortyFive() { // Method encompassing .45 caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 3;
-		this.setAmmunition(temp.fortyFive(fortyFive[random]));
-		if (this.getName().equals("UMP")) {
-			this.setCapacity(30);
-			this.setRange("Medium");
+	public Ammo twelveG(String bulletName) { // 12 Gauge
+		Ammo bullet = new Ammo();
+		this.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "Magnum Buckshot":
+			bullet.setProjectiles(8);
+			bullet.setFleshDamage(50);
+			bullet.setPenetrationPower(2);
+			break;
+		case "Flechette":
+			bullet.setProjectiles(8);
+			bullet.setFleshDamage(25);
+			bullet.setPenetrationPower(31);
+			break;
+		case "RIP":
+			bullet.setFleshDamage(265);
+			bullet.setPenetrationPower(2);
+			break;
+		case "AP-20 Slug":
+			bullet.setFleshDamage(164);
+			bullet.setPenetrationPower(37);
+			break;
 		}
+		return bullet;
 	}
 
-	private void FourSix() { // Method encompassing 4.6x30mm caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 3;
-		this.setAmmunition(temp.fourSix(fourSix[random]));
-		if (this.getName().equals("MP7A2")) {
-			this.setCapacity(30);
-			this.setRange("Medium");
+	public Ammo twentyG(String bulletName) { // 20 Gauge
+		Ammo bullet = new Ammo();
+		this.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "RIP":
+			bullet.setFleshDamage(265);
+			bullet.setPenetrationPower(2);
+			break;
+		case "AP-20 Slug":
+			bullet.setFleshDamage(164);
+			bullet.setPenetrationPower(37);
+			break;
+		case "5.6 Buckshot":
+			bullet.setProjectiles(8);
+			bullet.setFleshDamage(26);
+			bullet.setPenetrationPower(1);
+			break;
+		case "Poleva-6u Slug":
+			bullet.setProjectiles(1);
+			bullet.setFleshDamage(135);
+			bullet.setPenetrationPower(17);
+			break;
 		}
+		return bullet;
 	}
 
-	private void FiveSeven() { // Method encompassing 5.7x28mm caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 3;
-		this.setAmmunition(temp.fiveSeven(fiveSeven[random]));
-		switch (this.getName()) {
-		case "FN 5-7":
-			this.setCapacity(20);
-			this.setRange("Medium");
+	public Ammo fourG(String bulletName) { // 23x75mm
+		Ammo bullet = new Ammo();
+		this.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "Shrapnel-10 Buckshot":
+			bullet.setProjectiles(8);
+			bullet.setFleshDamage(87);
+			bullet.setPenetrationPower(11);
 			break;
-		case "FN P90":
-			this.setCapacity(50);
-			this.setRange("Medium");
+		case "Barrikada Slug":
+			bullet.setFleshDamage(192);
+			bullet.setPenetrationPower(39);
+			break;
+		case "Zveda Flashbang Round":
+			bullet.setFleshDamage(0);
+			bullet.setPenetrationPower(0);
 			break;
 		}
+		return bullet;
 	}
 
-	private void TwelveGauge() { // Method encompassing 12 gauge caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 5;
-		this.setAmmunition(temp.twelveG(twelveG[random]));
-		switch (this.getName()) {
-		case "MP-133":
-			this.setCapacity(6);
-			this.setRange("Short");
+	public Ammo threeSixSix(String bulletName) { // .366
+		Ammo bullet = new Ammo();
+		this.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "TKM Geksa" :
+			bullet.setFleshDamage(110);
+			bullet.setPenetrationPower(14);
 			break;
-		case "MP-153":
-			this.setCapacity(5);
-			this.setRange("Short");
+		case "TKM EKO" :
+			bullet.setFleshDamage(73);
+			bullet.setPenetrationPower(30);
 			break;
-		case "Saiga-12K":
-			this.setCapacity(5);
-			this.setRange("Short");
-			break;
-		case "M870":
-			this.setCapacity(7);
-			this.setRange("Short");
-			break;
-		case "M590A1":
-			this.setCapacity(8);
-			this.setRange("Short");
-			break;
-		case "M3 Super 90":
-			this.setCapacity(11);
-			this.setRange("Short");
+		case "TKM AP-M" :
+			bullet.setFleshDamage(90);
+			bullet.setPenetrationPower(42);
 			break;
 		}
+		return bullet;
 	}
 
-	private void TwentyGauge() { // Method encompassing twenty gauge caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 2;
-		this.setAmmunition(temp.twentyG(twentyG[random]));
-		if (this.getName().equals("TOZ-106")) {
-			this.setCapacity(3);
-			this.setRange("Short");
+	public Ammo fiveFourFive(String bulletName) { // 5.45x39mm
+		Ammo bullet = new Ammo();
+		bullet.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "PRS GS" :
+			bullet.setFleshDamage(70);
+			bullet.setPenetrationPower(13);
+			break;
+		case "PS GS" :
+			bullet.setFleshDamage(53);
+			bullet.setPenetrationPower(28);
+			break;
+		case "BT GS" :
+			bullet.setFleshDamage(48);
+			bullet.setPenetrationPower(37);
+			break;
+		case "7N40" :
+			bullet.setFleshDamage(52);
+			bullet.setPenetrationPower(42);
+			break;
+		case "BP GS" :
+			bullet.setFleshDamage(46);
+			bullet.setPenetrationPower(45);
+			break;
+		case "PPBS GS Igolnik" :
+			bullet.setFleshDamage(37);
+			bullet.setPenetrationPower(62);
+			break;
 		}
+		return bullet;
 	}
 
-	private void TwentyThreeGauge() { // Method encompassing twenty three gauge caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 3;
-		this.setAmmunition(temp.twentyThree(twentyThree[random]));
-		if (this.getName().equals("KS-23M")) {
-			random = (int) Math.random() * 2;
-			this.setCapacity(3);
-			this.setRange("Short");
+	public Ammo fiveFiveSix(String bulletName) { // 5.56x45mm
+		Ammo bullet = new Ammo();
+		bullet.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "Warmageddon" :
+			bullet.setFleshDamage(88);
+			bullet.setPenetrationPower(3);
+			break;
+		case "M856" :
+			bullet.setFleshDamage(64);
+			bullet.setPenetrationPower(18);
+			break;
+		case "M855" :
+			bullet.setFleshDamage(57);
+			bullet.setPenetrationPower(31);
+			break;
+		case "M856A1" :
+			bullet.setFleshDamage(52);
+			bullet.setPenetrationPower(38);
+			break;
+		case "M995" :
+			bullet.setFleshDamage(42);
+			bullet.setPenetrationPower(53);
+			break;
+		case "SSA AP" :
+			bullet.setFleshDamage(38);
+			bullet.setPenetrationPower(57);
+			break;
 		}
+		return bullet;
 	}
 
-	private void ThreeSixSix() { // Method encompassing .366 caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 3;
-		this.setAmmunition(temp.threeSixSix(threeSixSix[random]));
-		if (this.getName().equals("VPO-215")) {
-			random = (int) Math.random() * 2;
-			this.setCapacity(5);
-			this.setRange("Long");
+	public Ammo sevenSixTwo(String bulletName) { // 7.62xXXmm
+		Ammo bullet = new Ammo();
+		bullet.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "TT LRNPC" : // 7.62x25mm
+			bullet.setFleshDamage(66);
+			bullet.setPenetrationPower(7);
+			break;
+		case "TT AKBS" : // 7.62x25mm
+			bullet.setFleshDamage(64);
+			bullet.setPenetrationPower(12);
+			break;
+		case "TT PST GZH" : // 7.62x25mm
+			bullet.setFleshDamage(50);
+			bullet.setPenetrationPower(25);
+			break;
+		case "HP" : // 7.62x39mm
+			bullet.setFleshDamage(87);
+			bullet.setPenetrationPower(15);
+			break;
+		case "T-51M1 GZH" : // 7.62x39mm
+			bullet.setFleshDamage(64);
+			bullet.setPenetrationPower(30);
+			break;
+		case "PS GZH" : // 7.62x39mm
+			bullet.setFleshDamage(57);
+			bullet.setPenetrationPower(35);
+			break;
+		case "BP GZH" : // 7.62x39mm
+			bullet.setFleshDamage(58);
+			bullet.setPenetrationPower(47);
+			break;
+		case "MA1 AP" : // 7.62x39mm
+			bullet.setFleshDamage(47);
+			bullet.setPenetrationPower(58);
+			break;
+		case "Ultra Nosler" : // 7.62x51mm
+			bullet.setFleshDamage(107);
+			bullet.setPenetrationPower(15);
+			break;
+		case "M80" : // 7.62x51mm
+			bullet.setFleshDamage(80);
+			bullet.setPenetrationPower(41);
+			break;
+		case "M61" : // 7.62x51mm
+			bullet.setFleshDamage(70);
+			bullet.setPenetrationPower(64);
+			break;
+		case "M993" : // 7.62x51mm
+			bullet.setFleshDamage(67);
+			bullet.setPenetrationPower(70);
+			break;
+		case "HP BT Tracer" : // 7.62x54mm
+			bullet.setFleshDamage(102);
+			bullet.setPenetrationPower(23);
+			break;
+		case "T-46M GZH" : // 7.62x54mm
+			bullet.setFleshDamage(82);
+			bullet.setPenetrationPower(41);
+			break;
+		case "SNB GZH" : // 7.62x54mm
+			bullet.setFleshDamage(75);
+			bullet.setPenetrationPower(62);
+			break;
+		case "BS GS" : // 7.62x54mm
+			bullet.setFleshDamage(72);
+			bullet.setPenetrationPower(70);
+			break;
 		}
+		return bullet;
 	}
 
-	private void FiveFourFive() { // Method encompassing 5.45x39mm caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 7;
-		this.setAmmunition(temp.fiveFourFive(fiveFourFive[random]));
-		switch (this.getName()) {
-		case "AKS-74U":
-			random = (int) Math.random() * 2;
-			this.setCapacity(30);
-			this.setRange("Medium");
+	public Ammo threeHundred(String bulletName) { // .300
+		Ammo bullet = new Ammo();
+		bullet.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "Blackout Whisper" :
+			bullet.setFleshDamage(90);
+			bullet.setPenetrationPower(15);
 			break;
-		case "AK-74":
-			this.setCapacity(30);
-			this.setRange("Long");
+		case "Blackout BCP FMJ" :
+			bullet.setFleshDamage(60);
+			bullet.setPenetrationPower(30);
 			break;
-		case "AK-74M":
-			this.setCapacity(30);
-			this.setRange("Long");
+		case "Blackout CBJ" :
+			bullet.setFleshDamage(58);
+			bullet.setPenetrationPower(43);
 			break;
-		case "AK-105":
-			this.setCapacity(30);
-			this.setRange("Long");
-			break;
-		case "AK-12":
-			this.setCapacity(30);
-			this.setRange("Long");
-			break;
-		case "RPK-16":
-			this.setCapacity(60);
-			this.setRange("Long");
+		case "Blackout AP" :
+			bullet.setFleshDamage(51);
+			bullet.setPenetrationPower(48);
 			break;
 		}
+		return bullet;
 	}
 
-	private void FiveFiveSix() { // Method encompassing 5.45x39mm caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 7;
-		this.setAmmunition(temp.fiveFiveSix(fiveFiveSix[random]));
-		switch (this.getName()) {
-		case "ADAR 2-15":
-			this.setCapacity(30);
-			this.setRange("Medium");
+	public Ammo sixEight(String bulletName) { // 6.8x51mm
+		Ammo bullet = new Ammo();
+		bullet.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "SIG FMJ" :
+			bullet.setFleshDamage(80);
+			bullet.setPenetrationPower(36);
 			break;
-		case "TX-15":
-			this.setCapacity(30);
-			this.setRange("Long");
-			break;
-		case "AK-101":
-			this.setCapacity(30);
-			this.setRange("Long");
-			break;
-		case "AK-104":
-			this.setCapacity(30);
-			this.setRange("Long");
-			break;
-		case "M4A1":
-			this.setCapacity(30);
-			this.setRange("Long");
-			break;
-		case "Aug A3":
-			this.setCapacity(30);
-			this.setRange("Long");
-			break;
-		case "HK 416A5":
-			this.setCapacity(30);
-			this.setRange("Long");
+		case "SIG Hybrid" :
+			bullet.setFleshDamage(72);
+			bullet.setPenetrationPower(47);
 			break;
 		}
+		return bullet;
 	}
 
-	private void SevenTwentyFive() { // Method encompassing 7.62x25mm caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 3;
-		this.setAmmunition(temp.sevenSixTwo(sevenSixTwo[0][random]));
-		switch (this.getName()) {
-		case "PPSh-41":
-			this.setCapacity(35);
-			this.setRange("Medium");
+	public Ammo twelveSeven(String bulletName) { // 12.7x55mm
+		Ammo bullet = new Ammo();
+		bullet.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "PS12A" :
+			bullet.setFleshDamage(165);
+			bullet.setPenetrationPower(10);
 			break;
-		case "Golden TT-33":
-			this.setCapacity(8);
-			this.setRange("Short");
+		case "PS12" :
+			bullet.setFleshDamage(115);
+			bullet.setPenetrationPower(28);
+			break;
+		case "PS12B" :
+			bullet.setFleshDamage(102);
+			bullet.setPenetrationPower(46);
 			break;
 		}
+		return bullet;
 	}
 
-	private void SevenThirtyNine() { // Method encompassing 7.62x39mm caliber weapons
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 5;
-		this.setAmmunition(temp.sevenSixTwo(sevenSixTwo[1][random]));
-		switch (this.getName()) {
-		case "SKS":
-			this.setCapacity(10);
-			this.setRange("Long");
+	public Ammo threeThreeEight(String bulletName) { // .338 Lapua
+		Ammo bullet = new Ammo();
+		bullet.setName(bulletName);
+		bullet.setProjectiles(1);
+		switch (bullet.getName()) {
+		case "TAC-X" :
+			bullet.setFleshDamage(196);
+			bullet.setPenetrationPower(18);
 			break;
-		case "VPO-136":
-			this.setCapacity(10);
-			this.setRange("Medium");
+		case "UCW" :
+			bullet.setFleshDamage(142);
+			bullet.setPenetrationPower(32);
 			break;
-		case "AKM":
-			this.setCapacity(30);
-			this.setRange("Long");
+		case "FMJ" :
+			bullet.setFleshDamage(122);
+			bullet.setPenetrationPower(47);
 			break;
-		case "AK-104":
-			this.setCapacity(30);
-			this.setRange("Long");
-			break;
-		case "RPD":
-			this.setCapacity(100);
-			this.setRange("Long");
-			break;
-		case "RPDN":
-			this.setCapacity(100);
-			this.setRange("Long");
-			break;
-		case "Mk47 Mutant":
-			this.setCapacity(30);
-			this.setRange("Long");
+		case "AP" :
+			bullet.setFleshDamage(115);
+			bullet.setPenetrationPower(79);
 			break;
 		}
+		return bullet;
 	}
 
-	private void SevenFiftyOne() {
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 4;
-		this.setAmmunition(temp.sevenSixTwo(sevenSixTwo[2][random]));
-		switch (this.getName()) {
-		case "VPO-101":
-			this.setCapacity(10);
-			this.setRange("Medium");
+	public Ammo fortyMM(String bulletName) { // 40xXXmm Grenade Launcher Cartridges
+		Ammo grenadeLauncherCartridge = new Ammo();
+		grenadeLauncherCartridge.setName(bulletName);
+		switch (grenadeLauncherCartridge.getName()) {
+		case "M381 HE" :
+			grenadeLauncherCartridge.setProjectiles(10);
+			grenadeLauncherCartridge.setFleshDamage(199);
+			grenadeLauncherCartridge.setPenetrationPower(1);
 			break;
-		case "MDR":
-			this.setCapacity(30);
-			this.setRange("Long");
+		case "M433 HEDP" :
+			grenadeLauncherCartridge.setProjectiles(15);
+			grenadeLauncherCartridge.setFleshDamage(199);
+			grenadeLauncherCartridge.setPenetrationPower(1);
 			break;
-		case "SCAR-L":
-			this.setCapacity(30);
-			this.setRange("Long");
+		case "M576 MP-APERS" :
+			grenadeLauncherCartridge.setProjectiles(15);
+			grenadeLauncherCartridge.setFleshDamage(160);
+			grenadeLauncherCartridge.setPenetrationPower(5);
 			break;
-		case "SA-58":
-			this.setCapacity(30);
-			this.setRange("Long");
-			break;
-		case "RFB":
-			this.setCapacity(20);
-			this.setRange("Long");
-			break;
-		case "SR-25":
-			this.setCapacity(20);
-			this.setRange("Long");
-			break;
-		case "M1A":
-			this.setCapacity(20);
-			this.setRange("Long");
-			break;
-		case "G28":
-			this.setCapacity(10);
-			this.setRange("Long");
-			break;
-		case "RSASS":
-			this.setCapacity(20);
-			this.setRange("Long");
-			break;
-		case "M700":
-			this.setCapacity(5);
-			this.setRange("Long");
-			break;
-		case "DVL-10":
-			this.setCapacity(10);
-			this.setRange("Long");
-			break;
-		case "T-5000":
-			this.setCapacity(5);
-			this.setRange("Long");
+		case "VOG-25" :
+			grenadeLauncherCartridge.setProjectiles(15);
+			grenadeLauncherCartridge.setFleshDamage(199);
+			grenadeLauncherCartridge.setPenetrationPower(0);
 			break;
 		}
-	}
-
-	private void SevenFiftyFour() {
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 4;
-		this.setAmmunition(temp.sevenSixTwo(sevenSixTwo[3][random]));
-		switch (this.getName()) {
-		case "Mosin":
-			this.setCapacity(5);
-			this.setRange("Long");
-			break;
-		case "SV-98":
-			this.setCapacity(10);
-			this.setRange("Long");
-			break;
-		case "SVDS":
-			this.setCapacity(10);
-			this.setRange("Long");
-			break;
-		case "PKM":
-			this.setCapacity(100);
-			this.setRange("Long");
-			break;
-		case "PKP":
-			this.setCapacity(100);
-			this.setRange("Long");
-			break;
-		}
-	}
-
-	private void ThreeHundred() {
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 4;
-		this.setAmmunition(temp.twentyThree(threeHundred[random]));
-		if (this.getName().equals("MCX")) {
-			this.setCapacity(30);
-			this.setRange("Long");
-		}
-	}
-
-	private void SixEight() {
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 2;
-		this.setAmmunition(temp.twentyThree(sixEight[random]));
-		if (this.getName().equals("MCX Spear")) {
-			this.setCapacity(25);
-			this.setRange("Long");
-		}
-	}
-
-	private void TwelveSeven() {
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 3;
-		this.setAmmunition(temp.twentyThree(twelveSeven[random]));
-		if (this.getName().equals("ASh-12")) {
-			this.setCapacity(10);
-			this.setRange("Medium");
-		}
-	}
-
-	private void ThreeThreeEight() {
-		Ammo temp = new Ammo();
-		int random = (int) Math.random() * 3;
-		this.setAmmunition(temp.twentyThree(threeThreeEight[random]));
-		if (this.getName().equals("AXMC")) {
-			this.setCapacity(5);
-			this.setRange("Long");
-		}
+		return grenadeLauncherCartridge;
 	}
 }
