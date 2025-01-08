@@ -153,7 +153,7 @@ public class Gun {
 			this.setRange("Low");
 			break;
 		case "PP-91":
-			this.setCapacity(30);
+			this.setCapacity(20);
 			this.setRange("Low");
 			break;
 		}
