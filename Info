@@ -28,15 +28,99 @@ Raiders- strong ex-military scavengers who move in cohesive teams. Russian and N
 Rogues- strong ex-USEC PMCs who have banded together to control the water treatment plant. NATO military-grade guns and equipment.
 Bosses are extremely strong location-specific enemies who are to be expected in any place in a raid. They have special guns and equipment, but a low chance of spawning.
 
-The Guns and Ammo:
+The Guns:
 Players have access to a full arsenal of weapons available in the game.
 They can choose to take or swap guns and ammo acquired from enemies or from looting.
 Players can choose to modify weapons they own to make them easier to shoot, to gain range, or silence shots.
 Different enemy factions have access to different weapons that fit their group's backstory.
-List of most guns and their stats:
 
+Lists of most guns, their caliber, and default magazine capacity by category:
+
+PM- pistol, 9x18mm, 8 rounds
+MP-443- pistol, 9x19mm, 18 rounds
+Glock 17- pistol, 9x19mm, 17 rounds
+Glock 18C- pistol, 9x19mm, 17 rounds
+M9A3- pistol, 9x19mm, 17 rounds
+SR-1MP- pistol, 9x21mm, 18 rounds
+FN 5-7- pistol, 5.7x30mm, 20 rounds
+TT-33- pistol, 7.62x25mm, 8 rounds
+
+PP-91- submachine gun, 9x18mm, 20 rounds
+Saiga-9- submachine gun, 9x19mm, 20 rounds
+STM-9- submachine gun, 9x19mm, 19 rounds
+PP-19-01- submachine gun, 9x19mm, 30 rounds
+MP5- submachine gun, 9x19mm, 30 rounds
+MP9- submachine gun, 9x19mm, 25 rounds
+MPX- submachine gun, 9x19mm, 30 rounds
+Vector- submachine gun, 9x19mm, 31 rounds
+UMP- submachine gun, .45 ACP, 25 rounds
+MP7A2- submachine gun, 4.6x30mm, 30 rounds
+FN P90- submachine gun, 5.7x30mm, 50 rounds
+PPSh-41- submachine gun, 7.62x25mm, 35 rounds
+
+MP-133- shotgun, 12/70, 6 rounds
+MP-153- shotgun, 12/70, 5 rounds
+Saiga-12K- shotgun, 12/70, 5 rounds
+M870- shotgun, 12/70, 7 rounds
+M590A1- shotgun, 12/70, 8 rounds
+M3 Super 90- shotgun, 12/70, 11 rounds
+TOZ-106- shotgun, 20/70, 3 rounds
+KS-23M- shotgun, 23x75mmR, 3 rounds
+
+KBP 9A-91- assault carbine, 9x39mm, 20 rounds
+ADAR 2-15- assault carbine, 5.56x39mm, 20 rounds
+TX-15- assault carbine, 5.56x39mm, 30 rounds
+SKS- assault carbine, 7.62x39mm, 10 rounds
+VPO-136- assault carbine, 7.62x39mm, 10 rounds
+VPO-101- assault carbine, 7.62x51mm, 10 
+RFB- assault carbine, 7.62x51mm, 20 rounds
+
+AS-VAL- assault rifle, 9x39mm, 20 rounds
+AKS-74U- assault rifle, 5.45x39mm, 30 rounds
+AK-74- assault rifle, 5.45x39mm, 30 rounds
+AK-74M- assault rifle, 5.45x39mm, 30 rounds
+AK-105- assault rifle, 5.45x39mm, 30 rounds
+AK-12- assault rifle, 5.45x39mm, 30 rounds
+AK-101- assault rifle, 5.56x39mm, 30 rounds
+AK-104- assault rifle, 5.56x39mm, 30 rounds
+M4A1- assault rifle, 5.56x39mm, 30 rounds
+Aug A3- assault rifle, 5.56x39mm, 30 rounds
+HK 416A5- assault rifle, 5.56x39mm, 30 rounds
+AKM- assault rifle, 7.62x39mm, 30 rounds
+AK-104- assault rifle, 7.62x39mm, 30 rounds
+Mk47 Mutant- assault rifle, 7.62x39mm, 30 rounds
+MDR- assault rifle. 7.62x51mm, 30 rounds
+SCAR-L- assault rifle, 7.62x51mm, 30 rounds
+SA-58- assault rifle, 7.62x51mm, 30 rounds
+MCX- assault rifle, .300 Blackout, 30 rounds
+MCX Spear- assault rifle, 6.8x51mm, 25 rounds
+ASh-12- assault rifle, 12.7x55mm, 10 rounds
+
+RPK-16- light machine gun, 5.45x39mm, 60 rounds
+RPD- light machine gun, 7.62x39mm, 100 rounds
+RPDN- light machine gun, 7.62x39mm, 100 rounds
+PKM- light machine gun, 7.62x54mmR, 100 rounds
+PKP- light machine gun, 7.62x54mmR, 100 rounds
+
+VSS Vintorez- marksman rifle, 9x39mm, 10 rounds
+SR-25- marksman rifle, 7.62x51mm, 20 rounds
+M1A- marksman rifle, 7.62x51mm, 20 rounds
+G28- marksman rifle, 7.62x51mm, 10 rounds
+RSASS- marksman rifle, 7.62x51mm, 20 rounds
+SVDS- marksman rifle, 7.62x54mmR, 10 rounds
+
+VPO-215- bolt-action rifle, .366 TKM, 4 rounds
+M700- bolt-action rifle, 7.62x51mm, 5 rounds
+DVL-10- bolt-action rifle, 7.62x51mm, 10 rounds
+T-5000- bolt-action rifle, 7.62x51mm, 5 rounds
+Mosin- bolt-action rifle, 7.62x54mmR, 5 rounds
+SV-98- bolt-action rifle, 7.62x54mmR, 10 rounds
+AXMC- bolt-action rifle, .338 Lapua Magnum, 10 rounds
+
+Note: These default magazine capacities do not include bullets in the chamber.
 Some special weapons not in this list can only be found by fighting certain people or groups, so keep an eye out.
 
+The Ammo:
 Players can equip a certain ammo type in their hideout to shoot for their whole raid.
 Primary weapon ammo is considered infinite for players and enemies if less than 5 magazines or 3 drums or boxes were fired in one fight.
 If players and enemies runs out of ammo, enemies will switch to their secondary weapon while players can choose to do so.
