@@ -416,7 +416,7 @@ public class Gun {
 		this.setAmmunition(temp.sevenSixTwo(sevenSixTwo[0][random]));
 		switch (this.getName()) {
 		case "PPSh-41":
-			this.setCapacity(71);
+			this.setCapacity(35);
 			this.setRange("Medium");
 			break;
 		case "Golden TT-33":
