@@ -404,7 +404,7 @@ public class Gun {
 			this.setRange("Long");
 			break;
 		case "HK 416A5":
-			this.setCapacity(60);
+			this.setCapacity(30);
 			this.setRange("Long");
 			break;
 		}
