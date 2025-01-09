@@ -6,4 +6,4 @@ There may be some things you may recognize from mainstream games.
 Eventually all names and direct references will be removed or changed to orignal ideas.
 
 Repository includes all files and documentation created during development.
-All game statistics and information is contained in Info.
+All game statistics and information is contained in the file titled Info.
